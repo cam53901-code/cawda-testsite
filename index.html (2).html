@@ -324,16 +324,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <!-- START CONTACT FORM -->
 <div id="contact-form-wrapper">
   <style>
-    /* CSS Variables for easy color management */
     #contact-form-wrapper {
-      --primary-bg: #000000;       /* Black Background */
-      --card-bg: #0a0a0a;          /* Slightly lighter black for form card */
-      --text-color: #ffffff;       /* White text */
-      --accent-color: #8b00ff;     /* Purple Accent */
-      --accent-hover: #a333ff;     /* Lighter Purple for hover */
+      --primary-bg: #000000;
+      --card-bg: #0a0a0a;
+      --text-color: #ffffff;
+      --accent-color: #8b00ff;
+      --accent-hover: #a333ff;
       --border-color: #333333;
       --input-bg: #111111;
       
@@ -441,39 +439,36 @@
 
   <div class="form-container">
     <h2>Contact Us</h2>
-    <form id="my-contact-form">
+    
+    <!-- 👇 EDIT THESE TWO LINES ONLY -->
+    <form id="contact-form" action="https://formspree.io/f/xaqaqkpb" method="POST">
       
-      <!-- 👇 EDIT THIS: Paste your Formspree Form ID in the action URL -->
-      <form action="https://formspree.io/f/xaqaqkpb" method="POST" id="inner-form">
-        
-        <!-- 👇 EDIT THIS: Your Email (Used for reply-to and reference) -->
-        <input type="hidden" name="_replyto" value="cawdacreates@gmail.com">
-        <input type="hidden" name="_subject" value="New Website Contact Form Submission">
+      <input type="hidden" name="_replyto" value="cawdacreates@gmail.com">
+      <input type="hidden" name="_subject" value="New Website Contact Form Submission">
 
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required placeholder="Your Name">
-        </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required placeholder="Your Name">
+      </div>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="your@email.com">
-        </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="your@email.com">
+      </div>
 
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" required placeholder="How can we help?"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="How can we help?"></textarea>
+      </div>
 
-        <button type="submit" id="submit-btn">Send Message</button>
-      </form>
-
-      <div class="form-message" id="form-message"></div>
+      <button type="submit" id="submit-btn">Send Message</button>
     </form>
+
+    <div class="form-message" id="form-message"></div>
   </div>
 
   <script>
-    const form = document.getElementById('inner-form');
+    const form = document.getElementById('contact-form');
     const btn = document.getElementById('submit-btn');
     const msg = document.getElementById('form-message');
 
@@ -483,22 +478,22 @@
       btn.textContent = 'Sending...';
       msg.style.display = 'none';
 
-      const data = new FormData(form);
+      const formData = new FormData(form);
       
       try {
         const response = await fetch(form.action, {
-          method: form.method,
-          body: data,
+          method: 'POST',
+          body: formData,
           headers: { 'Accept': 'application/json' }
         });
 
         if (response.ok) {
-          msg.textContent = 'Message sent successfully!';
+          msg.textContent = '✓ Message sent successfully!';
           msg.className = 'form-message success';
           form.reset();
         } else {
-          const json = await response.json();
-          msg.textContent = json.errors ? json.errors.map(e => e.message).join(', ') : 'Something went wrong.';
+          const errorData = await response.json();
+          msg.textContent = errorData.errors ? errorData.errors.map(e => e.message).join(', ') : 'Something went wrong.';
           msg.className = 'form-message error';
         }
       } catch (error) {
@@ -512,3 +507,4 @@
     });
   </script>
 </div>
+<!-- END CONTACT FORM -->
